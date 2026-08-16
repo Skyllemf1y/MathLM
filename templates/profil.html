@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block contenu %}
+    <a href="{{ url_for('accueil') }}" class="bouton-retour">← Retour aux exercices</a>
+
+    <section class="section-intro">
+        <h1>Personnalisation</h1>
+        <p class="sous-titre">Choisis ton pseudo et ton avatar.</p>
+    </section>
+
+    <div class="carte-profil carte-rang">
+        <p class="etiquette-champ">Ton rang</p>
+        <p class="rang-actuel">{{ profil_utilisateur.rang.icone }} {{ profil_utilisateur.rang.nom }}</p>
+
+        {% if progression_rang.rang_suivant %}
+            <div class="barre-progression-fond">
+                <div class="barre-progression-remplissage" data-largeur="{{ progression_rang.pourcentage }}"></div>
+            </div>
+            <p class="texte-progression">
+                {{ profil_utilisateur.score_total }} pts — encore un effort pour atteindre
+                {{ progression_rang.rang_suivant.icone }} {{ progression_rang.rang_suivant.nom }}
+            </p>
+        {% else %}
+            <p class="texte-progression">🎉 {{ profil_utilisateur.score_total }} pts — rang maximum atteint !</p>
+        {% endif %}
+    </div>
+
+    <div class="carte-profil carte-streak">
+        <p class="etiquette-champ">Ta série</p>
+        <p class="rang-actuel">
+            🔥 {{ streak_utilisateur.streak_actuelle }}
+            jour{{ 's' if streak_utilisateur.streak_actuelle != 1 else '' }}
+        </p>
+        <p class="texte-progression">
+            {% if streak_utilisateur.joue_aujourdhui %}
+                Bravo, tu as déjà joué aujourd'hui, continue comme ça !
+            {% else %}
+                Réponds à au moins une question aujourd'hui pour garder ta série.
+            {% endif %}
+            Record personnel :
+            {{ streak_utilisateur.meilleure_streak }}
+            jour{{ 's' if streak_utilisateur.meilleure_streak != 1 else '' }}.
+        </p>
+    </div>
+
+    <form method="POST" class="carte-profil">
+        <label class="etiquette-champ" for="champ-pseudo">Pseudo</label>
+        <input type="text" id="champ-pseudo" name="pseudo"
+               value="{{ profil_utilisateur.pseudo }}" maxlength="20" required>
+
+        <p class="etiquette-champ">Avatar</p>
+        <div class="grille-avatars">
+            {% for avatar in avatars_disponibles %}
+                <label class="option-avatar {% if avatar == profil_utilisateur.avatar %}option-avatar-choisi{% endif %}">
+                    <input type="radio" name="avatar" value="{{ avatar }}"
+                           {% if avatar == profil_utilisateur.avatar %}checked{% endif %}>
+                    <span>{{ avatar }}</span>
+                </label>
+            {% endfor %}
+        </div>
+
+        <button type="submit" class="bouton-continuer">Enregistrer</button>
+    </form>
+
+    <script src="{{ url_for('static', filename='js/progression.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block contenu %}
+    <section class="section-intro">
+        <h1>Classement</h1>
+        <p class="sous-titre">
+            Pour l'instant, ce classement est calculé uniquement sur cet ordinateur.
+            Une fois {{ nom_application }} hébergé en ligne, il deviendra un vrai
+            classement partagé entre tous les joueurs.
+        </p>
+    </section>
+
+    {% if entrees %}
+        <div class="liste-classement">
+            {% for entree in entrees %}
+                <div class="ligne-classement {% if entree.pseudo == pseudo_actuel %}ligne-classement-moi{% endif %}">
+                    <span class="rang-classement">#{{ loop.index }}</span>
+                    <span class="avatar-classement">{{ entree.avatar }}</span>
+                    <span class="icone-rang-classement" title="{{ entree.rang.nom }}">{{ entree.rang.icone }}</span>
+                    <span class="pseudo-classement">{{ entree.pseudo }}</span>
+                    <span class="score-classement">{{ entree.score_total }} pts</span>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="sous-titre">Personne n'a encore de score. Valide un niveau ou termine un test pour apparaître ici !</p>
+    {% endif %}
+{% endblock %}

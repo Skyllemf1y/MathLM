@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block contenu %}
+    <a href="{{ url_for('accueil') }}" class="bouton-retour">← Retour aux exercices</a>
+    <section class="section-intro">
+        <h1>Ma progression</h1>
+        <p class="sous-titre">Un coup d'œil sur tout ce que tu as accompli.</p>
+    </section>
+
+    <div class="liste-progression">
+        {% for chap in resume_chapitres %}
+            <div class="carte-progression-chapitre">
+                <div class="entete-progression-chapitre">
+                    <span class="titre-carte">{{ chap.nom }}</span>
+                    <span class="pourcentage-chapitre">{{ chap.pourcentage }}%</span>
+                </div>
+
+                <div class="barre-progression-fond">
+                    <div class="barre-progression-remplissage" data-largeur="{{ chap.pourcentage }}"></div>
+                <p class="texte-progression">{{ chap.nb_valides }} / {{ chap.nb_total }} niveaux validés</p>
+
+                <div class="badges-progression">
+                    {% if chap.cours_vu %}
+                        <span class="badge badge-ok">📘 Cours consulté</span>
+                    {% else %}
+                        <span class="badge badge-attente">📘 Cours pas encore vu</span>
+                    {% endif %}
+
+                    {% if chap.note_test is not none %}
+                        <span class="badge badge-ok">🏆 Meilleur test : {{ chap.note_test }}%</span>
+                    {% else %}
+                        <span class="badge badge-attente">🏆 Test pas encore tenté</span>
+                    {% endif %}
+                </div>
+
+                <a class="bouton-continuer" href="{{ url_for('chapitre', chapitre_id=chap.chapitre_id) }}">
+                    Continuer ce chapitre
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+    <script src="{{ url_for('static', filename='js/progression.js') }}"></script>
+{% endblock %}

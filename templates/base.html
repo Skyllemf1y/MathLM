@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ nom_application }}{% if titre_page %} - {{ titre_page }}{% endif %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header class="entete-site">
+        <div class="contenu-entete">
+            <a href="{{ url_for('accueil') }}" class="logo-site">
+                <span class="logo-icone">🧮</span>
+                <span class="logo-texte">{{ nom_application }}</span>
+            </a>
+
+            <nav class="nav-principale">
+                <a href="{{ url_for('accueil') }}"
+                   class="lien-nav {% if request.endpoint == 'accueil' %}lien-nav-actif{% endif %}">
+                    🏋️ Exercices
+                </a>
+                <a href="{{ url_for('liste_cours') }}"
+                   class="lien-nav {% if request.endpoint in ['liste_cours', 'cours'] %}lien-nav-actif{% endif %}">
+                    📘 Cours
+                </a>
+                <a href="{{ url_for('voir_progression') }}"
+                   class="lien-nav {% if request.endpoint == 'voir_progression' %}lien-nav-actif{% endif %}">
+                    📊 Progression
+                </a>
+                <a href="{{ url_for('classement') }}"
+                   class="lien-nav {% if request.endpoint == 'classement' %}lien-nav-actif{% endif %}">
+                    🏆 Classement
+                </a>
+            </nav>
+
+            <span class="badge-streak {% if streak_utilisateur.streak_actuelle == 0 %}badge-streak-eteinte{% endif %}"
+                  title="Série de jours consécutifs">
+                🔥 {{ streak_utilisateur.streak_actuelle }}
+            </span>
+
+            <a href="{{ url_for('profil') }}"
+               class="badge-profil {% if request.endpoint == 'profil' %}badge-profil-actif{% endif %}">
+                <span class="badge-profil-avatar">{{ profil_utilisateur.avatar }}</span>
+                <span class="badge-profil-pseudo">{{ profil_utilisateur.pseudo }}</span>
+                <span class="badge-profil-rang" title="{{ profil_utilisateur.rang.nom }}">{{ profil_utilisateur.rang.icone }}</span>
+            </a>
+        </div>
+    </header>
+
+    <main class="conteneur-principal">
+        {% block contenu %}{% endblock %}
+    </main>
+</body>
+</html>

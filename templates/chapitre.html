@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block contenu %}
+    <a href="{{ url_for('accueil') }}" class="bouton-retour">← Retour aux chapitres</a>
+
+    <section class="section-intro">
+        <h1>{{ nom_chapitre }}</h1>
+        <p class="sous-titre">Choisis un niveau.</p>
+    </section>
+
+    <a class="carte-cours" href="{{ url_for('cours', chapitre_id=chapitre_id) }}">
+        <span>📘</span> Voir le cours et faire le QCM
+    </a>
+    <div class="grille-niveaux">
+        {% for etat in etats_niveaux %}
+            {% if etat.debloque %}
+                <a class="carte-niveau {% if etat.valide %}carte-niveau-validee{% endif %}"
+                   href="{{ url_for('jouer', chapitre_id=chapitre_id, niveau=etat.numero) }}">
+                    {% if etat.valide %}
+                        <span class="icone-niveau">✓</span>
+                    {% endif %}
+                    <span class="numero-niveau">{{ etat.numero }}</span>
+                </a>
+            {% else %}
+                <span class="carte-niveau carte-niveau-verrouillee">
+                    <span class="icone-niveau">🔒</span>
+                    <span class="numero-niveau">{{ etat.numero }}</span>
+                </span>
+            {% endif %}
+        {% endfor %}
+    </div>
+
+    <div class="zone-test">
+        <a class="carte-test" href="{{ url_for('test_chapitre', chapitre_id=chapitre_id) }}">
+            <span>🏆</span> Test final du chapitre
+        </a>
+    </div>
+{% endblock %}

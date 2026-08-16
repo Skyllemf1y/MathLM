@@ -1,0 +1,810 @@
+:root {
+    --couleur-fond: #F5F7FB;
+    --couleur-lignes-quadrillage: #E4E9F5;
+    --couleur-texte: #1B2430;
+    --couleur-texte-doux: #5B6472;
+
+    --couleur-primaire: #2451B4;
+    --couleur-primaire-sombre: #1B3A85;
+
+    --couleur-accent: #FF7A45;
+    --couleur-accent-sombre: #E4622E;
+
+    --couleur-succes: #1FAA76;
+    --couleur-erreur: #E5484D;
+    --couleur-verrouille: #C7CDD9;
+
+    --couleur-carte: #FFFFFF;
+    --couleur-bordure: #E1E6EF;
+
+    --police-titres: 'Space Grotesk', sans-serif;
+    --police-texte: 'Inter', sans-serif;
+
+    --ombre-carte: 0 2px 10px rgba(27, 36, 48, 0.06);
+    --ombre-carte-hover: 0 8px 20px rgba(27, 36, 48, 0.12);
+    --arrondi: 16px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--police-texte);
+    color: var(--couleur-texte);
+    margin: 0;
+    background-color: var(--couleur-fond);
+    background-image:
+        linear-gradient(var(--couleur-lignes-quadrillage) 1px, transparent 1px),
+        linear-gradient(90deg, var(--couleur-lignes-quadrillage) 1px, transparent 1px);
+    background-size: 28px 28px;
+}
+
+h1, h2 {
+    font-family: var(--police-titres);
+    font-weight: 700;
+    margin: 0 0 6px 0;
+}
+
+.conteneur-principal {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 20px 20px 60px;
+}
+
+.entete-site {
+    background: var(--couleur-carte);
+    border-bottom: 1px solid var(--couleur-bordure);
+}
+
+.contenu-entete {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo-site {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    color: var(--couleur-texte);
+}
+
+.logo-icone { font-size: 1.4em; }
+
+.logo-texte {
+    font-family: var(--police-titres);
+    font-weight: 700;
+    font-size: 1.3em;
+    letter-spacing: -0.02em;
+}
+
+.nav-principale {
+    display: flex;
+    gap: 4px;
+}
+
+.lien-nav {
+    color: var(--couleur-texte-doux);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9em;
+    padding: 8px 14px;
+    border-radius: 999px;
+    transition: background 0.15s ease, color 0.15s ease;
+    white-space: nowrap;
+}
+
+.lien-nav:hover {
+    color: var(--couleur-primaire);
+    background: #EEF2FB;
+}
+
+.lien-nav-actif {
+    color: var(--couleur-primaire);
+    background: #EAF0FC;
+}
+
+.lien-nav:hover {
+    color: var(--couleur-primaire);
+}
+
+.logo-texte {
+    font-family: var(--police-titres);
+    font-weight: 700;
+    font-size: 1.3em;
+    letter-spacing: -0.02em;
+}
+
+.section-intro {
+    margin: 24px 0 20px;
+}
+
+.sous-titre {
+    color: var(--couleur-texte-doux);
+    margin: 0;
+}
+
+.bouton-retour {
+    display: inline-block;
+    margin-top: 16px;
+    color: var(--couleur-primaire);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95em;
+}
+
+.bouton-retour:hover {
+    text-decoration: underline;
+}
+
+.grille-chapitres {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 14px;
+}
+
+.carte-chapitre {
+    background: var(--couleur-carte);
+    border: 1px solid var(--couleur-bordure);
+    border-radius: var(--arrondi);
+    box-shadow: var(--ombre-carte);
+    padding: 20px;
+    text-decoration: none;
+    color: var(--couleur-texte);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.carte-chapitre:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--ombre-carte-hover);
+}
+
+.titre-carte {
+    font-family: var(--police-titres);
+    font-weight: 700;
+    font-size: 1.15em;
+}
+
+.sous-titre-carte {
+    color: var(--couleur-texte-doux);
+    font-size: 0.9em;
+}
+
+.grille-niveaux {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 16px;
+}
+
+.carte-niveau {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: var(--couleur-carte);
+    border: 2px solid var(--couleur-primaire);
+    color: var(--couleur-primaire);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    font-family: var(--police-titres);
+    font-weight: 700;
+    font-size: 1.1em;
+    box-shadow: var(--ombre-carte);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    position: relative;
+}
+
+.carte-niveau:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: var(--ombre-carte-hover);
+}
+
+.carte-niveau-validee {
+    background: var(--couleur-succes);
+    border-color: var(--couleur-succes);
+    color: white;
+}
+
+.carte-niveau-verrouillee {
+    background: #EDEFF3;
+    border: 2px solid var(--couleur-verrouille);
+    color: var(--couleur-verrouille);
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.icone-niveau {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    font-size: 0.75em;
+    background: white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--ombre-carte);
+}
+
+.zone-test {
+    margin-top: 30px;
+}
+
+.carte-test {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--couleur-accent);
+    color: white;
+    text-decoration: none;
+    padding: 14px 26px;
+    border-radius: 12px;
+    font-weight: 600;
+    box-shadow: var(--ombre-carte);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.carte-test:hover {
+    transform: translateY(-2px);
+    background: var(--couleur-accent-sombre);
+}
+
+.carte-jeu {
+    background: var(--couleur-carte);
+    border-radius: var(--arrondi);
+    box-shadow: var(--ombre-carte);
+    padding: 28px;
+    margin-top: 16px;
+}
+
+.barre-jeu {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.rangee-coeurs {
+    font-size: 1.3em;
+    letter-spacing: 2px;
+    color: var(--couleur-accent);
+}
+
+.coeur-perdu {
+    color: var(--couleur-verrouille);
+}
+
+.pastille-score {
+    background: #FFF3EC;
+    color: var(--couleur-accent-sombre);
+    font-weight: 600;
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-size: 0.95em;
+}
+
+.repere-niveau {
+    color: var(--couleur-texte-doux);
+    font-size: 0.9em;
+    margin: 0 0 14px;
+}
+
+.barre-progression-fond {
+    background: #EDEFF3;
+    border-radius: 999px;
+    height: 10px;
+    overflow: hidden;
+}
+
+.barre-progression-remplissage {
+    background: var(--couleur-succes);
+    height: 100%;
+    border-radius: 999px;
+    transition: width 0.3s ease;
+}
+
+.texte-progression {
+    text-align: right;
+    font-size: 0.8em;
+    color: var(--couleur-texte-doux);
+    margin: 4px 0 20px;
+}
+
+.zone-question {
+    text-align: center;
+}
+
+.zone-question h2 {
+    font-size: 1.8em;
+    margin-bottom: 24px;
+}
+
+.zone-reponse {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+#champ-reponse {
+    font-family: var(--police-titres);
+    font-size: 1.2em;
+    padding: 12px 16px;
+    width: 140px;
+    text-align: center;
+    border: 2px solid var(--couleur-bordure);
+    border-radius: 12px;
+    outline: none;
+    transition: border-color 0.15s ease;
+}
+
+#champ-reponse:focus {
+    border-color: var(--couleur-primaire);
+}
+
+#bouton-valider {
+    font-family: var(--police-texte);
+    font-weight: 600;
+    font-size: 1.05em;
+    padding: 12px 26px;
+    background: var(--couleur-primaire);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background 0.15s ease, transform 0.15s ease;
+}
+
+#bouton-valider:hover {
+    background: var(--couleur-primaire-sombre);
+    transform: translateY(-1px);
+}
+
+#bouton-valider:disabled {
+    background: var(--couleur-verrouille);
+    cursor: not-allowed;
+    transform: none;
+}
+
+.message-resultat {
+    margin-top: 18px;
+    font-weight: 600;
+    min-height: 1.2em;
+}
+
+.bouton-continuer {
+    display: inline-block;
+    margin-top: 12px;
+    background: var(--couleur-succes);
+    color: white;
+    text-decoration: none;
+    padding: 12px 28px;
+    border-radius: 12px;
+    font-weight: 600;
+    transition: transform 0.15s ease;
+}
+
+.bouton-continuer:hover {
+    transform: translateY(-2px);
+}
+
+@media (max-width: 480px) {
+    .carte-jeu {
+        padding: 20px;
+    }
+
+    .zone-question h2 {
+        font-size: 1.4em;
+    }
+
+    .carte-niveau {
+        width: 54px;
+        height: 54px;
+    }
+
+    .contenu-entete {
+        flex-direction: column;
+        gap: 10px;
+        align-items: stretch;
+    }
+    .nav-principale {
+        justify-content: center;
+    }
+    .lien-nav {
+        font-size: 0.8em;
+        padding: 6px 10px;
+    }
+}
+/* --- Carte "Voir le cours" (page chapitre) --- */
+.carte-cours {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #EAF0FC;
+    color: var(--couleur-primaire);
+    text-decoration: none;
+    padding: 14px 22px;
+    border-radius: 12px;
+    font-weight: 600;
+    margin: 16px 0 26px;
+    transition: background 0.15s ease;
+}
+
+.carte-cours:hover {
+    background: #DCE6FA;
+}
+
+/* --- Contenu théorique --- */
+.carte-cours-contenu {
+    background: var(--couleur-carte);
+    border-radius: var(--arrondi);
+    box-shadow: var(--ombre-carte);
+    padding: 26px;
+    line-height: 1.6;
+}
+
+.carte-cours-contenu p {
+    margin: 0 0 14px;
+}
+
+.carte-cours-contenu p:last-child {
+    margin-bottom: 0;
+}
+
+.encadre-exemple {
+    margin-top: 18px;
+    background: #F5F7FB;
+    border-left: 4px solid var(--couleur-primaire);
+    border-radius: 8px;
+    padding: 14px 18px;
+}
+
+.etiquette-exemple {
+    display: block;
+    font-size: 0.75em;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--couleur-texte-doux);
+    margin-bottom: 4px;
+}
+
+.encadre-exemple p {
+    margin: 0;
+    font-family: var(--police-titres);
+}
+
+/* --- QCM --- */
+.titre-qcm {
+    margin-top: 32px;
+}
+
+.carte-qcm {
+    background: var(--couleur-carte);
+    border-radius: var(--arrondi);
+    box-shadow: var(--ombre-carte);
+    padding: 20px;
+    margin-bottom: 14px;
+}
+
+.enonce-qcm {
+    font-weight: 600;
+    margin: 0 0 12px;
+}
+
+.choix-qcm {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.option-qcm {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.15s ease;
+}
+
+.option-qcm:hover {
+    background: #F5F7FB;
+}
+
+.option-qcm input {
+    accent-color: var(--couleur-primaire);
+}
+
+.option-correcte {
+    background: #E3F6EE;
+    color: var(--couleur-succes);
+    font-weight: 600;
+}
+
+.option-incorrecte {
+    background: #FBE9EA;
+    color: var(--couleur-erreur);
+}
+
+.feedback-qcm {
+    margin: 10px 0 0;
+    font-weight: 600;
+    min-height: 1.2em;
+}
+
+.score-qcm {
+    text-align: center;
+    font-weight: 600;
+    font-size: 1.1em;
+    margin-top: 16px;
+}
+
+/* =============================================================
+   PAGE PROGRESSION
+   ============================================================= */
+
+.liste-progression {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 16px;
+}
+
+.carte-progression-chapitre {
+    background: var(--couleur-carte);
+    border-radius: var(--arrondi);
+    box-shadow: var(--ombre-carte);
+    padding: 22px;
+}
+
+.entete-progression-chapitre {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 8px;
+}
+
+.pourcentage-chapitre {
+    font-family: var(--police-titres);
+    font-weight: 700;
+    color: var(--couleur-primaire);
+}
+
+.badges-progression {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 14px 0 16px;
+}
+
+.badge {
+    font-size: 0.8em;
+    padding: 5px 12px;
+    border-radius: 999px;
+    font-weight: 600;
+}
+
+.badge-ok {
+    background: #E3F6EE;
+    color: var(--couleur-succes);
+}
+
+.badge-attente {
+    background: #EDEFF3;
+    color: var(--couleur-texte-doux);
+}
+
+/* --- Badge profil (en-tête) --- */
+.badge-profil {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+    color: var(--couleur-texte);
+    padding: 6px 12px;
+    border-radius: 999px;
+    transition: background 0.15s ease;
+    font-weight: 600;
+    font-size: 0.9em;
+}
+
+.badge-profil:hover {
+    background: #EEF2FB;
+}
+
+.badge-profil-actif {
+    background: #EAF0FC;
+    color: var(--couleur-primaire);
+}
+
+.badge-profil-avatar {
+    font-size: 1.2em;
+}
+
+/* --- Page personnalisation --- */
+.carte-profil {
+    background: var(--couleur-carte);
+    border-radius: var(--arrondi);
+    box-shadow: var(--ombre-carte);
+    padding: 26px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-width: 480px;
+}
+
+.etiquette-champ {
+    font-weight: 600;
+    margin: 10px 0 4px;
+}
+
+.etiquette-champ:first-child {
+    margin-top: 0;
+}
+
+#champ-pseudo {
+    font-family: var(--police-texte);
+    font-size: 1.05em;
+    padding: 10px 14px;
+    border: 2px solid var(--couleur-bordure);
+    border-radius: 10px;
+    outline: none;
+    transition: border-color 0.15s ease;
+}
+
+#champ-pseudo:focus {
+    border-color: var(--couleur-primaire);
+}
+
+.grille-avatars {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.option-avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8em;
+    padding: 14px 0;
+    border: 2px solid var(--couleur-bordure);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.option-avatar:hover {
+    border-color: var(--couleur-primaire);
+}
+
+.option-avatar input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.option-avatar-choisi {
+    border-color: var(--couleur-primaire);
+    background: #EAF0FC;
+}
+
+.carte-profil .bouton-continuer {
+    align-self: flex-start;
+    border: none;
+    cursor: pointer;
+    font-family: var(--police-texte);
+    margin-top: 8px;
+}
+
+.nav-principale {
+    flex-wrap: wrap;
+}
+
+.liste-classement {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 16px;
+}
+
+.ligne-classement {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: var(--couleur-carte);
+    border-radius: 12px;
+    box-shadow: var(--ombre-carte);
+    padding: 14px 18px;
+}
+
+.ligne-classement-moi {
+    border: 2px solid var(--couleur-primaire);
+}
+
+.rang-classement {
+    font-family: var(--police-titres);
+    font-weight: 700;
+    color: var(--couleur-texte-doux);
+    width: 32px;
+}
+
+.avatar-classement {
+    font-size: 1.4em;
+}
+
+.pseudo-classement {
+    flex: 1;
+    font-weight: 600;
+}
+
+.score-classement {
+    font-family: var(--police-titres);
+    font-weight: 700;
+    color: var(--couleur-primaire);
+}
+
+.explication-erreur {
+    margin-top: 12px;
+    background: #F5F7FB;
+    border-left: 4px solid var(--couleur-primaire);
+    border-radius: 8px;
+    padding: 12px 16px;
+    text-align: left;
+    font-size: 0.95em;
+    line-height: 1.5;
+}
+
+.badge-profil-rang {
+    font-size: 1.1em;
+    margin-left: 2px;
+}
+
+.carte-rang {
+    margin-bottom: 20px;
+}
+
+.rang-actuel {
+    font-family: var(--police-titres);
+    font-weight: 700;
+    font-size: 1.4em;
+    margin: 4px 0 12px;
+}
+
+.icone-rang-classement {
+    font-size: 1.1em;
+}
+
+.badge-streak {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    font-weight: 700;
+    font-family: var(--police-titres);
+    font-size: 0.95em;
+    color: var(--couleur-accent-sombre);
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: #FFF3EC;
+}
+
+.badge-streak-eteinte {
+    color: var(--couleur-texte-doux);
+    background: #EDEFF3;
+}
+
+.carte-streak {
+    margin-bottom: 20px;
+}

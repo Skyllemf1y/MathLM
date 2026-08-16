@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block contenu %}
+    <a href="{{ url_for('chapitre', chapitre_id=chapitre_id) }}" class="bouton-retour">← Retour au menu</a>
+
+    <section class="section-intro">
+        <h1>{{ cours.titre }}</h1>
+        <p class="sous-titre">{{ nom_chapitre }} · Théorie</p>
+    </section>
+
+    <div class="carte-cours-contenu">
+        {% for paragraphe in cours.paragraphes %}
+            <p>{{ paragraphe }}</p>
+        {% endfor %}
+
+        <div class="encadre-exemple">
+            <span class="etiquette-exemple">Exemple</span>
+            <p>{{ cours.exemple }}</p>
+        </div>
+    </div>
+
+    <h2 class="titre-qcm">Quiz rapide</h2>
+    <p class="sous-titre">Vérifie que tu as bien compris (corrigé instantané, pas de vies en jeu).</p>
+
+    <div id="zone-qcm">
+        {% for question in cours.qcm %}
+            {% set index_question = loop.index0 %}
+            <div class="carte-qcm" data-bonne-reponse="{{ question.bonne_reponse }}">
+                <p class="enonce-qcm">{{ loop.index }}. {{ question.question }}</p>
+                <div class="choix-qcm">
+                    {% for choix in question.choix %}
+                        <label class="option-qcm">
+                            <input type="radio" name="qcm-{{ index_question }}" value="{{ loop.index0 }}">
+                            {{ choix }}
+                        </label>
+                    {% endfor %}
+                </div>
+                <p class="feedback-qcm"></p>
+            </div>
+        {% endfor %}
+    </div>
+
+    <button id="bouton-corriger-qcm" class="bouton-continuer">Corriger mes réponses</button>
+    <p id="score-qcm" class="score-qcm"></p>
+
+    <script src="{{ url_for('static', filename='js/cours.js') }}"></script>
+{% endblock %}

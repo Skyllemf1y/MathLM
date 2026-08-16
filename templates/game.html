@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block contenu %}
+    <a href="{{ url_retour }}" class="bouton-retour">← Retour</a>
+
+    <div class="carte-jeu">
+        <div class="barre-jeu">
+            <span id="vies" class="rangee-coeurs" data-vies-max="{{ vies_max }}">
+                {% for i in range(vies_max) %}
+                    <span class="coeur {% if i >= vies %}coeur-perdu{% endif %}">❤</span>
+                {% endfor %}
+            </span>
+            <span id="score" class="pastille-score">⭐ {{ score }}</span>
+        </div>
+
+        <p class="repere-niveau">
+            {{ nom_chapitre }}
+            {% if est_test %} · Test final
+            {% elif est_challenge %} · Score à battre : {{ meilleur_score_challenge }}
+            {% else %} · Niveau {{ niveau }}
+            {% endif %}
+        </p>
+
+        {% if not est_challenge %}
+            <div class="barre-progression-fond">
+                <div id="barre-progression-remplissage" class="barre-progression-remplissage"
+                     data-largeur="{{ (nb_bonnes_reponses / objectif * 100) | round }}"></div>
+            </div>
+            <p id="texte-progression" class="texte-progression">{{ nb_bonnes_reponses }} / {{ objectif }}</p>
+        {% endif %}
+
+        <div class="zone-question">
+            <h2 id="texte-question">{{ question }}</h2>
+            <div class="zone-reponse">
+                <input type="number" step="any" id="champ-reponse" placeholder="Ta réponse" autofocus>
+                <button id="bouton-valider">Valider</button>
+            </div>
+            <p id="message-resultat" class="message-resultat"></p>
+            <p id="explication-erreur" class="explication-erreur" style="display:none;"></p>
+            <a id="bouton-continuer" class="bouton-continuer" style="display:none;" href="{{ url_retour }}">
+                Continuer
+            </a>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/game.js') }}"></script>
+{% endblock %}

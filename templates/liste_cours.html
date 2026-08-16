@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block contenu %}
+    <section class="section-intro">
+        <h1>Cours</h1>
+        <p class="sous-titre">La théorie de chaque chapitre, avec un QCM pour vérifier.</p>
+    </section>
+
+    <div class="grille-chapitres">
+        {% for id_chapitre, infos in chapitres.items() %}
+            <a class="carte-chapitre" href="{{ url_for('cours', chapitre_id=id_chapitre) }}">
+                <span class="titre-carte">{{ infos.nom }}</span>
+                <span class="sous-titre-carte">Théorie + QCM</span>
+            </a>
+        {% endfor %}
+    </div>
+{% endblock %}
