@@ -1,46 +1,35 @@
-# =============================================================
-#  modules/streak.py
-# -------------------------------------------------------------
-#  Gère la SÉRIE (streak) : le nombre de jours consécutifs où le
-#  joueur a répondu correctement à au moins une question.
-# =============================================================
-
 import json
 import os
 from datetime import date
-
-DOSSIER_DATA = os.path.join(os.path.dirname(__file__), "..", "data")
-FICHIER_STREAK = os.path.join(DOSSIER_DATA, "streak.json")
+from modules.stockage_joueur import chemin_fichier_joueur
 
 
-def _charger() -> dict:
-    if not os.path.exists(FICHIER_STREAK):
+def _charger(pseudo: str) -> dict:
+    chemin = chemin_fichier_joueur(pseudo, "streak.json")
+    if not os.path.exists(chemin):
         return {"dernier_jour_joue": None, "streak_actuelle": 0, "meilleure_streak": 0}
-    with open(FICHIER_STREAK, "r", encoding="utf-8") as f:
+    with open(chemin, "r", encoding="utf-8") as f:
         return json.load(f)
 
 
-def _sauvegarder(data: dict):
-    os.makedirs(DOSSIER_DATA, exist_ok=True)
-    with open(FICHIER_STREAK, "w", encoding="utf-8") as f:
+def _sauvegarder(pseudo: str, data: dict):
+    chemin = chemin_fichier_joueur(pseudo, "streak.json")
+    with open(chemin, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
 
 
-def _ecart_en_jours(dernier_jour_str) -> int:
+def _ecart_en_jours(dernier_jour_str):
     if dernier_jour_str is None:
         return None
-    dernier_jour = date.fromisoformat(dernier_jour_str)
-    return (date.today() - dernier_jour).days
+    return (date.today() - date.fromisoformat(dernier_jour_str)).days
 
 
-def obtenir_streak() -> dict:
-    data = _charger()
+def obtenir_streak(pseudo: str) -> dict:
+    data = _charger(pseudo)
     ecart = _ecart_en_jours(data["dernier_jour_joue"])
-
     streak_affichee = data["streak_actuelle"]
     if ecart is not None and ecart > 1:
         streak_affichee = 0
-
     return {
         "streak_actuelle": streak_affichee,
         "meilleure_streak": data["meilleure_streak"],
@@ -48,19 +37,13 @@ def obtenir_streak() -> dict:
     }
 
 
-def marquer_jour_joue():
-    data = _charger()
+def marquer_jour_joue(pseudo: str):
+    data = _charger(pseudo)
     ecart = _ecart_en_jours(data["dernier_jour_joue"])
-
     if ecart == 0:
         return
-
-    if ecart == 1:
-        nouvelle_streak = data["streak_actuelle"] + 1
-    else:
-        nouvelle_streak = 1
-
+    nouvelle_streak = data["streak_actuelle"] + 1 if ecart == 1 else 1
     data["streak_actuelle"] = nouvelle_streak
     data["meilleure_streak"] = max(data["meilleure_streak"], nouvelle_streak)
     data["dernier_jour_joue"] = date.today().isoformat()
-    _sauvegarder(data)
+    _sauvegarder(pseudo, data)

@@ -4,7 +4,7 @@
 
     <section class="section-intro">
         <h1>Personnalisation</h1>
-        <p class="sous-titre">Choisis ton pseudo et ton avatar.</p>
+        <p class="sous-titre">Ton pseudo (<strong>{{ profil_utilisateur.pseudo }}</strong>) est fixé par ton compte. Tu peux changer ton avatar ici.</p>
     </section>
 
     <div class="carte-profil carte-rang">
@@ -42,11 +42,19 @@
         </p>
     </div>
 
-    <form method="POST" class="carte-profil">
-        <label class="etiquette-champ" for="champ-pseudo">Pseudo</label>
-        <input type="text" id="champ-pseudo" name="pseudo"
-               value="{{ profil_utilisateur.pseudo }}" maxlength="20" required>
+        <div class="carte-profil carte-badges">
+        <p class="etiquette-champ">Tes badges</p>
+        <div class="grille-badges">
+            {% for badge in badges %}
+                <div class="badge-carte {% if badge.obtenu %}badge-carte-obtenue{% else %}badge-carte-verrouillee{% endif %}" title="{{ badge.description }}">
+                    <span class="badge-carte-icone">{{ badge.icone }}</span>
+                    <span class="badge-carte-nom">{{ badge.nom }}</span>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
 
+    <form method="POST" class="carte-profil">
         <p class="etiquette-champ">Avatar</p>
         <div class="grille-avatars">
             {% for avatar in avatars_disponibles %}

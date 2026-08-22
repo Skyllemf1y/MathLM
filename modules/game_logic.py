@@ -1,10 +1,3 @@
-# =============================================================
-#  modules/game_logic.py
-# -------------------------------------------------------------
-#  Rôle : gérer une partie en cours, dans l'un des 3 modes :
-#    - NIVEAU NORMAL, TEST, ou CHALLENGE INFINI.
-# =============================================================
-
 import random
 
 from modules.question_generator import generer_question
@@ -12,40 +5,39 @@ from modules.progression import valider_niveau, enregistrer_note_test, dernier_n
 from modules.personalization import ajouter_score
 from modules.streak import marquer_jour_joue
 from modules.challenge import enregistrer_score_challenge
-from config import (
-    VIES_INITIALES,
-    POINTS_PAR_BONNE_REPONSE,
-    NB_QUESTIONS_PAR_NIVEAU,
-    NB_QUESTIONS_TEST,
-    CHAPITRES,
-)
+from config import VIES_INITIALES, POINTS_PAR_BONNE_REPONSE, NB_QUESTIONS_PAR_NIVEAU, NB_QUESTIONS_TEST, CHAPITRES
 
 
 class PartieEnCours:
-    def __init__(self, chapitre_id, niveau, est_test: bool = False, est_challenge: bool = False):
+    def __init__(self, pseudo: str, chapitre_id, niveau, est_test: bool = False, est_challenge: bool = False):
+        self.pseudo = pseudo
         self.chapitre_id = chapitre_id
         self.niveau = niveau
         self.est_test = est_test
         self.est_challenge = est_challenge
-
         self.vies = VIES_INITIALES
         self.score = 0
         self.nb_questions_posees = 0
         self.nb_bonnes_reponses = 0
-
         self.question_actuelle = None
         self.nouvelle_question()
 
     def _prochaine_selection(self):
         if self.est_challenge:
-            chapitre_choisi = random.choice(list(CHAPITRES.keys()))
+            chapitres_ids = list(CHAPITRES.keys())
+            poids = []
+            for cid in chapitres_ids:
+                nb_niveaux = CHAPITRES[cid]["nb_niveaux"]
+                valides = dernier_niveau_valide(self.pseudo, cid)
+                poids.append(max(1, nb_niveaux - valides))
+
+            chapitre_choisi = random.choices(chapitres_ids, weights=poids, k=1)[0]
             nb_niveaux = CHAPITRES[chapitre_choisi]["nb_niveaux"]
             return chapitre_choisi, random.randint(1, nb_niveaux)
 
         if self.est_test:
             nb_niveaux = CHAPITRES[self.chapitre_id]["nb_niveaux"]
             return self.chapitre_id, random.randint(1, nb_niveaux)
-
         return self.chapitre_id, self.niveau
 
     def nouvelle_question(self):
@@ -62,16 +54,13 @@ class PartieEnCours:
         except (TypeError, ValueError):
             reponse_joueur = None
 
-        est_correct = (
-            reponse_joueur is not None
-            and abs(reponse_joueur - bonne_reponse) <= max(tolerance, 1e-9)
-        )
+        est_correct = reponse_joueur is not None and abs(reponse_joueur - bonne_reponse) <= max(tolerance, 1e-9)
 
         self.nb_questions_posees += 1
         if est_correct:
             self.score += POINTS_PAR_BONNE_REPONSE
             self.nb_bonnes_reponses += 1
-            marquer_jour_joue()
+            marquer_jour_joue(self.pseudo)
         else:
             self.vies = max(0, self.vies - 1)
 
@@ -82,27 +71,23 @@ class PartieEnCours:
         if self.est_challenge:
             partie_terminee = self.vies <= 0
             if partie_terminee:
-                nouveau_record_challenge = enregistrer_score_challenge(self.score)
-
+                nouveau_record_challenge = enregistrer_score_challenge(self.pseudo, self.score)
         elif self.est_test:
             partie_terminee = self.nb_questions_posees >= NB_QUESTIONS_TEST
             if partie_terminee:
                 note = round(100 * self.nb_bonnes_reponses / self.nb_questions_posees)
-                ancienne_meilleure_note = meilleure_note_test(self.chapitre_id)
-                enregistrer_note_test(self.chapitre_id, note)
-
+                ancienne_meilleure_note = meilleure_note_test(self.pseudo, self.chapitre_id)
+                enregistrer_note_test(self.pseudo, self.chapitre_id, note)
                 if ancienne_meilleure_note is None or note > ancienne_meilleure_note:
-                    ajouter_score(self.score)
-
+                    ajouter_score(self.pseudo, self.score)
         else:
             if self.nb_bonnes_reponses >= NB_QUESTIONS_PAR_NIVEAU:
                 partie_terminee = True
                 niveau_reussi = True
-
-                est_nouveau_niveau = self.niveau > dernier_niveau_valide(self.chapitre_id)
-                valider_niveau(self.chapitre_id, self.niveau)
+                est_nouveau_niveau = self.niveau > dernier_niveau_valide(self.pseudo, self.chapitre_id)
+                valider_niveau(self.pseudo, self.chapitre_id, self.niveau)
                 if est_nouveau_niveau:
-                    ajouter_score(self.score)
+                    ajouter_score(self.pseudo, self.score)
             elif self.vies <= 0:
                 partie_terminee = True
             else:
@@ -112,37 +97,26 @@ class PartieEnCours:
             self.nouvelle_question()
 
         return {
-            "correct": est_correct,
-            "bonne_reponse": bonne_reponse,
-            "explication": explication,
-            "vies": self.vies,
-            "score": self.score,
-            "nb_bonnes_reponses": self.nb_bonnes_reponses,
-            "nb_questions_posees": self.nb_questions_posees,
-            "partie_terminee": partie_terminee,
-            "niveau_reussi": niveau_reussi,
-            "note": note,
-            "est_challenge": self.est_challenge,
+            "correct": est_correct, "bonne_reponse": bonne_reponse, "explication": explication,
+            "vies": self.vies, "score": self.score, "nb_bonnes_reponses": self.nb_bonnes_reponses,
+            "nb_questions_posees": self.nb_questions_posees, "partie_terminee": partie_terminee,
+            "niveau_reussi": niveau_reussi, "note": note, "est_challenge": self.est_challenge,
             "nouveau_record_challenge": nouveau_record_challenge,
             "prochaine_question": self.question_actuelle["texte"] if not partie_terminee else None,
         }
 
     def vers_dict(self):
         return {
-            "chapitre_id": self.chapitre_id,
-            "niveau": self.niveau,
-            "est_test": self.est_test,
-            "est_challenge": self.est_challenge,
-            "vies": self.vies,
-            "score": self.score,
-            "nb_questions_posees": self.nb_questions_posees,
-            "nb_bonnes_reponses": self.nb_bonnes_reponses,
-            "question_actuelle": self.question_actuelle,
+            "pseudo": self.pseudo, "chapitre_id": self.chapitre_id, "niveau": self.niveau,
+            "est_test": self.est_test, "est_challenge": self.est_challenge, "vies": self.vies,
+            "score": self.score, "nb_questions_posees": self.nb_questions_posees,
+            "nb_bonnes_reponses": self.nb_bonnes_reponses, "question_actuelle": self.question_actuelle,
         }
 
     @staticmethod
     def depuis_dict(data: dict):
         partie = PartieEnCours.__new__(PartieEnCours)
+        partie.pseudo = data["pseudo"]
         partie.chapitre_id = data["chapitre_id"]
         partie.niveau = data["niveau"]
         partie.est_test = data["est_test"]

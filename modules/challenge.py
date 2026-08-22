@@ -1,39 +1,30 @@
-# =============================================================
-#  modules/challenge.py
-# -------------------------------------------------------------
-#  Gère le RECORD du mode "challenge infini". Ce score n'alimente
-#  PAS le classement principal (mode infini = grindable à l'infini,
-#  ça casserait l'anti-triche des niveaux/tests). Record perso séparé.
-# =============================================================
-
 import json
 import os
-
-DOSSIER_DATA = os.path.join(os.path.dirname(__file__), "..", "data")
-FICHIER_CHALLENGE = os.path.join(DOSSIER_DATA, "challenge.json")
+from modules.stockage_joueur import chemin_fichier_joueur
 
 
-def _charger() -> dict:
-    if not os.path.exists(FICHIER_CHALLENGE):
+def _charger(pseudo: str) -> dict:
+    chemin = chemin_fichier_joueur(pseudo, "challenge.json")
+    if not os.path.exists(chemin):
         return {"meilleur_score": 0}
-    with open(FICHIER_CHALLENGE, "r", encoding="utf-8") as f:
+    with open(chemin, "r", encoding="utf-8") as f:
         return json.load(f)
 
 
-def _sauvegarder(data: dict):
-    os.makedirs(DOSSIER_DATA, exist_ok=True)
-    with open(FICHIER_CHALLENGE, "w", encoding="utf-8") as f:
+def _sauvegarder(pseudo: str, data: dict):
+    chemin = chemin_fichier_joueur(pseudo, "challenge.json")
+    with open(chemin, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
 
 
-def obtenir_meilleur_score_challenge() -> int:
-    return _charger()["meilleur_score"]
+def obtenir_meilleur_score_challenge(pseudo: str) -> int:
+    return _charger(pseudo)["meilleur_score"]
 
 
-def enregistrer_score_challenge(score: int) -> bool:
-    data = _charger()
+def enregistrer_score_challenge(pseudo: str, score: int) -> bool:
+    data = _charger(pseudo)
     if score > data["meilleur_score"]:
         data["meilleur_score"] = score
-        _sauvegarder(data)
+        _sauvegarder(pseudo, data)
         return True
     return False

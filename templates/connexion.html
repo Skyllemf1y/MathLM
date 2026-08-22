@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block contenu %}
+    <a href="{{ url_for('accueil') }}" class="bouton-retour">← Retour</a>
+
+    <section class="section-intro">
+        <h1>Connexion</h1>
+        <p class="sous-titre">Entre tes identifiants.</p>
+    </section>
+
+    <form method="POST" class="carte-profil">
+        <label class="etiquette-champ" for="champ-pseudo">Pseudo</label>
+        <input type="text" id="champ-pseudo" name="pseudo" required>
+
+        <label class="etiquette-champ" for="champ-mdp">Mot de passe</label>
+        <input type="password" id="champ-mdp" name="mot_de_passe" required>
+
+        <button type="submit" class="bouton-continuer">Se connecter</button>
+    </form>
+
+    <p class="sous-titre" style="margin-top:16px;">
+        Pas encore de compte ? <a href="{{ url_for('inscription') }}">Inscris-toi</a>
+    </p>
+{% endblock %}

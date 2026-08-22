@@ -808,3 +808,83 @@ h1, h2 {
 .carte-streak {
     margin-bottom: 20px;
 }
+
+.barre-compte {
+    font-size: 0.85em;
+    color: var(--couleur-texte-doux);
+    margin-left: auto;
+}
+
+.barre-compte a {
+    color: var(--couleur-primaire);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.barre-compte a:hover {
+    text-decoration: underline;
+}
+
+.zone-messages-flash {
+    margin-bottom: 16px;
+}
+
+.message-flash {
+    padding: 12px 16px;
+    border-radius: 10px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.message-flash-succes {
+    background: #E3F6EE;
+    color: var(--couleur-succes);
+}
+
+.message-flash-erreur {
+    background: #FBE9EA;
+    color: var(--couleur-erreur);
+}
+
+@media (max-width: 480px) {
+    .carte-jeu { padding: 20px; }
+    .zone-question h2 { font-size: 1.4em; }
+    .carte-niveau { width: 54px; height: 54px; }
+    .contenu-entete { flex-direction: column; gap: 10px; align-items: stretch; }
+    .nav-principale { justify-content: center; }
+    .lien-nav { font-size: 0.8em; padding: 6px 10px; }
+    .barre-compte { margin-left: 0; text-align: center; }
+}
+
+.minuteur {
+    font-family: var(--police-titres);
+    font-weight: 700;
+    font-size: 0.95em;
+    color: var(--couleur-primaire);
+    background: #EAF0FC;
+    padding: 6px 12px;
+    border-radius: 999px;
+}
+
+.grille-badges {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.badge-carte {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 14px 8px;
+    border-radius: 12px;
+    text-align: center;
+    border: 2px solid var(--couleur-bordure);
+}
+
+.badge-carte-icone { font-size: 1.8em; }
+.badge-carte-nom { font-size: 0.8em; font-weight: 600; }
+.badge-carte-obtenue { background: #FFF8EC; border-color: #F4C763; }
+.badge-carte-verrouillee { opacity: 0.4; filter: grayscale(1); }

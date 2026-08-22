@@ -8,6 +8,7 @@ const affichageScore = document.getElementById("score");
 const barreRemplissage = document.getElementById("barre-progression-remplissage");
 const texteProgression = document.getElementById("texte-progression");
 const boutonContinuer = document.getElementById("bouton-continuer");
+const chronoValeur = document.getElementById("chrono-valeur");
 
 const VIES_MAX = parseInt(affichageVies.dataset.viesMax);
 if (barreRemplissage) {
@@ -15,6 +16,25 @@ if (barreRemplissage) {
 }
 
 const OBJECTIF = texteProgression ? parseInt(texteProgression.textContent.split("/")[1].trim()) : null;
+
+const debutChrono = Date.now();
+let intervalleChrono = null;
+
+function formaterTemps(secondesTotal) {
+    const minutes = Math.floor(secondesTotal / 60);
+    const secondes = secondesTotal % 60;
+    return minutes + ":" + String(secondes).padStart(2, "0");
+}
+
+function tempsEcouleEnSecondes() {
+    return Math.floor((Date.now() - debutChrono) / 1000);
+}
+
+function demarrerChrono() {
+    intervalleChrono = setInterval(() => {
+        chronoValeur.textContent = formaterTemps(tempsEcouleEnSecondes());
+    }, 1000);
+}
 
 function mettreAJourCoeurs(viesRestantes) {
     let html = "";
@@ -62,20 +82,31 @@ async function validerReponse() {
     }
 
     if (data.partie_terminee) {
+        clearInterval(intervalleChrono);
+        const tempsFinal = formaterTemps(tempsEcouleEnSecondes());
+        chronoValeur.textContent = tempsFinal;
+
         champReponse.disabled = true;
         boutonValider.disabled = true;
         boutonContinuer.style.display = "inline-block";
 
+        const pourcentageReussite = data.nb_questions_posees > 0
+            ? Math.round(100 * data.nb_bonnes_reponses / data.nb_questions_posees)
+            : 0;
+
         if (data.niveau_reussi) {
-            texteQuestion.textContent = "🎉 Niveau validé ! Le niveau suivant est débloqué.";
+            texteQuestion.textContent =
+                `🎉 Niveau validé ! Score : ${pourcentageReussite}% (${data.nb_bonnes_reponses}/${data.nb_questions_posees}) · Temps : ${tempsFinal}`;
         } else if (data.note !== null && data.note !== undefined) {
-            texteQuestion.textContent = "🏁 Test terminé ! Note finale : " + data.note + " %";
+            texteQuestion.textContent =
+                `🏁 Test terminé ! Note : ${data.note}% · Temps : ${tempsFinal}`;
         } else if (data.est_challenge) {
-            texteQuestion.textContent = data.nouveau_record_challenge
-                ? "🏆 Nouveau record ! Score final : " + data.score
-                : "💔 Partie terminée ! Score final : " + data.score;
+            const titre = data.nouveau_record_challenge ? "🏆 Nouveau record !" : "🎲 Partie terminée !";
+            texteQuestion.textContent =
+                `${titre} Score : ${data.score} pts (${pourcentageReussite}% de réussite) · Temps : ${tempsFinal}`;
         } else {
-            texteQuestion.textContent = "💔 Plus de vies ! Réessaie ce niveau.";
+            texteQuestion.textContent =
+                `💔 Plus de vies ! Score : ${pourcentageReussite}% (${data.nb_bonnes_reponses}/${data.nb_questions_posees}) · Temps : ${tempsFinal}`;
         }
     } else {
         texteQuestion.textContent = data.prochaine_question;
@@ -91,3 +122,5 @@ champReponse.addEventListener("keydown", (e) => {
         validerReponse();
     }
 });
+
+demarrerChrono();
