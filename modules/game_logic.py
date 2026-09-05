@@ -5,6 +5,7 @@ from modules.progression import valider_niveau, enregistrer_note_test, dernier_n
 from modules.personalization import ajouter_score
 from modules.streak import marquer_jour_joue
 from modules.challenge import enregistrer_score_challenge
+from modules.erreurs import enregistrer_reponse, obtenir_taux_erreur
 from config import VIES_INITIALES, POINTS_PAR_BONNE_REPONSE, NB_QUESTIONS_PAR_NIVEAU, NB_QUESTIONS_TEST, CHAPITRES
 
 
@@ -29,7 +30,10 @@ class PartieEnCours:
             for cid in chapitres_ids:
                 nb_niveaux = CHAPITRES[cid]["nb_niveaux"]
                 valides = dernier_niveau_valide(self.pseudo, cid)
-                poids.append(max(1, nb_niveaux - valides))
+                poids_progression = max(1, nb_niveaux - valides)
+
+                taux_erreur = obtenir_taux_erreur(self.pseudo, cid)
+                poids.append(poids_progression * (1 + taux_erreur))
 
             chapitre_choisi = random.choices(chapitres_ids, weights=poids, k=1)[0]
             nb_niveaux = CHAPITRES[chapitre_choisi]["nb_niveaux"]
@@ -48,6 +52,7 @@ class PartieEnCours:
         bonne_reponse = self.question_actuelle["reponse"]
         explication = self.question_actuelle.get("explication", "")
         tolerance = self.question_actuelle.get("tolerance", 0)
+        chapitre_de_la_question = self.question_actuelle["chapitre"]
 
         try:
             reponse_joueur = float(reponse_joueur)
@@ -55,6 +60,8 @@ class PartieEnCours:
             reponse_joueur = None
 
         est_correct = reponse_joueur is not None and abs(reponse_joueur - bonne_reponse) <= max(tolerance, 1e-9)
+
+        enregistrer_reponse(self.pseudo, chapitre_de_la_question, est_correct)
 
         self.nb_questions_posees += 1
         if est_correct:

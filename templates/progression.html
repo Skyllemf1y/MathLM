@@ -6,6 +6,21 @@
         <p class="sous-titre">Un coup d'œil sur tout ce que tu as accompli.</p>
     </section>
 
+    {% if points_faibles %}
+        <div class="carte-points-faibles">
+            <p class="etiquette-champ">🎯 Tes points faibles</p>
+            <p class="sous-titre">Ce sont les chapitres où tu te trompes le plus souvent en ce moment. Le mode Challenge les propose déjà un peu plus souvent pour t'aider à progresser.</p>
+            <div class="liste-points-faibles">
+                {% for pf in points_faibles %}
+                    <a class="ligne-point-faible" href="{{ url_for('chapitre', chapitre_id=pf.chapitre_id) }}">
+                        <span>{{ pf.nom }}</span>
+                        <span class="pourcentage-erreur">{{ pf.pourcentage_erreur }}% d'erreurs</span>
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+
     <div class="liste-progression">
         {% for chap in resume_chapitres %}
             <div class="carte-progression-chapitre">
@@ -13,28 +28,15 @@
                     <span class="titre-carte">{{ chap.nom }}</span>
                     <span class="pourcentage-chapitre">{{ chap.pourcentage }}%</span>
                 </div>
-
                 <div class="barre-progression-fond">
                     <div class="barre-progression-remplissage" data-largeur="{{ chap.pourcentage }}"></div>
-                <p class="texte-progression">{{ chap.nb_valides }} / {{ chap.nb_total }} niveaux validés</p>
-
-                <div class="badges-progression">
-                    {% if chap.cours_vu %}
-                        <span class="badge badge-ok">📘 Cours consulté</span>
-                    {% else %}
-                        <span class="badge badge-attente">📘 Cours pas encore vu</span>
-                    {% endif %}
-
-                    {% if chap.note_test is not none %}
-                        <span class="badge badge-ok">🏆 Meilleur test : {{ chap.note_test }}%</span>
-                    {% else %}
-                        <span class="badge badge-attente">🏆 Test pas encore tenté</span>
-                    {% endif %}
                 </div>
-
-                <a class="bouton-continuer" href="{{ url_for('chapitre', chapitre_id=chap.chapitre_id) }}">
-                    Continuer ce chapitre
-                </a>
+                <p class="texte-progression">{{ chap.nb_valides }} / {{ chap.nb_total }} niveaux validés</p>
+                <div class="badges-progression">
+                    {% if chap.cours_vu %}<span class="badge badge-ok">📘 Cours consulté</span>{% else %}<span class="badge badge-attente">📘 Cours pas encore vu</span>{% endif %}
+                    {% if chap.note_test is not none %}<span class="badge badge-ok">🏆 Meilleur test : {{ chap.note_test }}%</span>{% else %}<span class="badge badge-attente">🏆 Test pas encore tenté</span>{% endif %}
+                </div>
+                <a class="bouton-continuer" href="{{ url_for('chapitre', chapitre_id=chap.chapitre_id) }}">Continuer ce chapitre</a>
             </div>
         {% endfor %}
     </div>

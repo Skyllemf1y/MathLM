@@ -3,6 +3,7 @@ import os
 
 from modules.stockage_joueur import chemin_fichier_joueur
 from modules.classement import mettre_a_jour_classement
+from modules.invite import est_invite
 
 AVATARS_DISPONIBLES = ["🦉", "🦊", "🐱", "🐼", "🦁", "🐸", "🤖", "🧮"]
 PROFIL_PAR_DEFAUT = {"avatar": "🦉", "score_total": 0}
@@ -35,7 +36,8 @@ def sauvegarder_avatar(pseudo: str, avatar: str):
         avatar = PROFIL_PAR_DEFAUT["avatar"]
 
     _sauvegarder_fichier(pseudo, avatar, profil_actuel["score_total"])
-    mettre_a_jour_classement(pseudo, avatar, profil_actuel["score_total"])
+    if not est_invite(pseudo):
+        mettre_a_jour_classement(pseudo, avatar, profil_actuel["score_total"])
 
 
 def ajouter_score(pseudo: str, points: int):
@@ -44,4 +46,5 @@ def ajouter_score(pseudo: str, points: int):
     profil = obtenir_profil(pseudo)
     nouveau_score = profil["score_total"] + points
     _sauvegarder_fichier(pseudo, profil["avatar"], nouveau_score)
-    mettre_a_jour_classement(pseudo, profil["avatar"], nouveau_score)
+    if not est_invite(pseudo):
+        mettre_a_jour_classement(pseudo, profil["avatar"], nouveau_score)

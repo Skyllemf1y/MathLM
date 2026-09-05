@@ -50,7 +50,12 @@ def _sauvegarder(data: dict):
         json.dump(data, f, ensure_ascii=False, indent=2)
 
 
+PREFIXE_INVITE = "Invite_"
+
+
 def pseudo_est_valide(pseudo: str) -> bool:
+    if pseudo.startswith(PREFIXE_INVITE):
+        return False
     return bool(_REGEX_PSEUDO_VALIDE.match(pseudo))
 
 
@@ -86,3 +91,8 @@ def verifier_identifiants(pseudo: str, mot_de_passe: str) -> bool:
     if compte is None:
         return False
     return check_password_hash(compte["mot_de_passe_hash"], mot_de_passe)
+
+
+def compter_comptes() -> int:
+    """Nombre de vrais comptes créés (hors invités, jamais stockés ici)."""
+    return len(_charger())

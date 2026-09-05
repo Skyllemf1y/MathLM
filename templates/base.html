@@ -16,23 +16,28 @@
                 <span class="logo-texte">{{ nom_application }}</span>
             </a>
 
+            {% if utilisateur_connecte %}
             <nav class="nav-principale">
                 <a href="{{ url_for('accueil') }}" class="lien-nav {% if request.endpoint == 'accueil' %}lien-nav-actif{% endif %}">🏋️ Exercices</a>
                 <a href="{{ url_for('liste_cours') }}" class="lien-nav {% if request.endpoint in ['liste_cours', 'cours'] %}lien-nav-actif{% endif %}">📘 Cours</a>
                 <a href="{{ url_for('voir_progression') }}" class="lien-nav {% if request.endpoint == 'voir_progression' %}lien-nav-actif{% endif %}">📊 Progression</a>
                 <a href="{{ url_for('classement') }}" class="lien-nav {% if request.endpoint == 'classement' %}lien-nav-actif{% endif %}">🏆 Classement</a>
+                {% if utilisateur_est_admin %}
+                    <a href="{{ url_for('admin_stats') }}" class="lien-nav {% if request.endpoint == 'admin_stats' %}lien-nav-actif{% endif %}">🛠️ Admin</a>
+                {% endif %}
             </nav>
 
-            {% if utilisateur_connecte %}
-                <span class="badge-streak {% if streak_utilisateur.streak_actuelle == 0 %}badge-streak-eteinte{% endif %}" title="Série de jours consécutifs">
-                    🔥 {{ streak_utilisateur.streak_actuelle }}
-                </span>
+            <span class="badge-streak {% if streak_utilisateur.streak_actuelle == 0 %}badge-streak-eteinte{% endif %}" title="Série de jours consécutifs">
+                🔥 {{ streak_utilisateur.streak_actuelle }}
+            </span>
 
-                <a href="{{ url_for('profil') }}" class="badge-profil {% if request.endpoint == 'profil' %}badge-profil-actif{% endif %}">
-                    <span class="badge-profil-avatar">{{ profil_utilisateur.avatar }}</span>
-                    <span class="badge-profil-pseudo">{{ profil_utilisateur.pseudo }}</span>
-                    <span class="badge-profil-rang" title="{{ profil_utilisateur.rang.nom }}">{{ profil_utilisateur.rang.icone }}</span>
-                </a>
+            <a href="{{ url_for('profil') }}" class="badge-profil {% if request.endpoint == 'profil' %}badge-profil-actif{% endif %}">
+                <span class="badge-profil-avatar">{{ profil_utilisateur.avatar }}</span>
+                <span class="badge-profil-pseudo">{{ profil_utilisateur.pseudo }}</span>
+                <span class="badge-profil-rang" title="{{ profil_utilisateur.rang.nom }}">{{ profil_utilisateur.rang.icone }}</span>
+            </a>
+            {% else %}
+                <span class="lien-nav">🏆 <a href="{{ url_for('classement') }}" style="color:inherit;">Classement</a></span>
             {% endif %}
 
             <span class="barre-compte">
@@ -47,6 +52,13 @@
         </div>
     </header>
 
+    {% if utilisateur_est_invite %}
+        <div class="bandeau-invite">
+            🕹️ Tu joues en tant qu'invité — ta progression sera perdue si tu fermes ton navigateur.
+            <a href="{{ url_for('inscription') }}">Créer un compte pour la garder</a>
+        </div>
+    {% endif %}
+
     <main class="conteneur-principal">
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
@@ -57,7 +69,6 @@
                 </div>
             {% endif %}
         {% endwith %}
-
         {% block contenu %}{% endblock %}
     </main>
 </body>

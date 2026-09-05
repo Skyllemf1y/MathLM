@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block contenu %}
+    <a href="{{ url_for('accueil') }}" class="bouton-retour">← Retour</a>
+    <section class="section-intro">
+        <h1>🛠️ Statistiques (admin)</h1>
+        <p class="sous-titre">
+            {{ nb_joueurs }} dossier(s) joueur (comptes + invités confondus) · {{ nb_comptes }} vrai(s) compte(s) créé(s).
+        </p>
+    </section>
+
+    <div class="liste-classement">
+        {% for s in stats %}
+            <div class="ligne-classement">
+                <span class="pseudo-classement">{{ s.nom }}</span>
+                <span class="sous-titre">{{ s.nb_reponses }} réponses au total</span>
+                <span class="score-classement">{{ s.taux_erreur }}% d'erreurs</span>
+            </div>
+        {% endfor %}
+    </div>
+
+    <p class="sous-titre" style="margin-top:16px;">
+        Les chapitres avec le plus fort taux d'erreur (en haut de liste) sont ceux à améliorer en priorité dans le cours.
+    </p>
+{% endblock %}

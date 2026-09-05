@@ -888,3 +888,60 @@ h1, h2 {
 .badge-carte-nom { font-size: 0.8em; font-weight: 600; }
 .badge-carte-obtenue { background: #FFF8EC; border-color: #F4C763; }
 .badge-carte-verrouillee { opacity: 0.4; filter: grayscale(1); }
+
+.bandeau-invite {
+    background: #FFF3EC;
+    color: var(--couleur-accent-sombre);
+    text-align: center;
+    padding: 10px 16px;
+    font-size: 0.9em;
+    font-weight: 600;
+}
+
+.bandeau-invite a {
+    color: var(--couleur-accent-sombre);
+    text-decoration: underline;
+}
+
+.carte-points-faibles {
+    background: var(--couleur-carte);
+    border-radius: var(--arrondi);
+    box-shadow: var(--ombre-carte);
+    padding: 22px;
+    margin: 16px 0 24px;
+    border-left: 4px solid var(--couleur-erreur);
+}
+
+.liste-points-faibles {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.ligne-point-faible {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #FBE9EA;
+    padding: 10px 16px;
+    border-radius: 10px;
+    text-decoration: none;
+    color: var(--couleur-texte);
+    font-weight: 600;
+}
+
+.pourcentage-erreur {
+    color: var(--couleur-erreur);
+    font-family: var(--police-titres);
+    font-weight: 700;
+}
+
+.section-hero { text-align: center; padding: 30px 10px; }
+.section-hero h1 { font-size: 1.8em; }
+.hero-actions { display: flex; justify-content: center; gap: 12px; margin-top: 20px; flex-wrap: wrap; }
+.bouton-retour-hero { display: inline-block; padding: 12px 26px; border-radius: 12px; border: 2px solid var(--couleur-primaire); color: var(--couleur-primaire); text-decoration: none; font-weight: 600; }
+.bouton-retour-hero:hover { background: #EAF0FC; }
+.grille-pitch { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 14px; margin-top: 30px; }
+.carte-pitch { background: var(--couleur-carte); border-radius: var(--arrondi); box-shadow: var(--ombre-carte); padding: 20px; text-align: center; }
+.pitch-icone { font-size: 2em; display: block; margin-bottom: 8px; }

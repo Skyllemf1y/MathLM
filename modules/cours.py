@@ -290,4 +290,40 @@ COURS = {
             },
         ],
     },
+        "suites": {
+        "titre": "Les suites numériques",
+        "paragraphes": [
+            "Une suite numérique est une liste ordonnée de nombres (u0, u1, u2, ...), où chaque terme porte un indice qui indique sa position.",
+            "Une suite est dite ARITHMÉTIQUE quand on passe d'un terme au suivant en ajoutant toujours le même nombre, appelé la raison (notée r). Formule du terme général : u_n = u0 + n×r.",
+            "Une suite est dite GÉOMÉTRIQUE quand on passe d'un terme au suivant en multipliant toujours par le même nombre, la raison (notée q). Formule du terme général : u_n = u0 × q^n.",
+            "Pour calculer la somme des n premiers termes, pas besoin d'additionner un par un : il existe une formule directe, différente pour une suite arithmétique et pour une suite géométrique.",
+        ],
+        "exemple": "Suite arithmétique u0 = 2, r = 3 → u1 = 5, u2 = 8, u3 = 11 (on ajoute toujours 3)",
+        "qcm": [
+            {"question": "Qu'est-ce qui caractérise une suite arithmétique ?", "choix": ["On multiplie toujours par le même nombre", "On ajoute toujours le même nombre", "Les termes sont toujours positifs", "Il n'y a pas de règle fixe"], "bonne_reponse": 1},
+            {"question": "Quelle est la formule du terme général d'une suite arithmétique ?", "choix": ["u_n = u0 × n × r", "u_n = u0 + n×r", "u_n = u0^n", "u_n = u0 / n"], "bonne_reponse": 1},
+            {"question": "Qu'est-ce qui caractérise une suite géométrique ?", "choix": ["On ajoute toujours le même nombre", "On multiplie toujours par le même nombre", "Les termes diminuent toujours", "Il n'y a pas de règle fixe"], "bonne_reponse": 1},
+            {"question": "Si u0 = 3 et la raison arithmétique r = 4, que vaut u2 ?", "choix": ["7", "11", "12", "9"], "bonne_reponse": 1},
+            {"question": "Pour calculer la somme des n premiers termes d'une suite, on...", "choix": ["additionne obligatoirement un par un", "utilise une formule directe", "ne peut pas la calculer", "multiplie le premier par le dernier"], "bonne_reponse": 1},
+        ],
+    },
+
+    "probabilites": {
+        "titre": "Introduction aux probabilités",
+        "paragraphes": [
+            "La probabilité d'un événement mesure ses chances de se réaliser : un nombre entre 0 (impossible) et 1 (certain).",
+            "Dans un UNIVERS ÉQUIPROBABLE (tous les résultats ont la même chance de se produire), on calcule une probabilité avec : P(événement) = (nombre de cas favorables) / (nombre de cas possibles).",
+            "La probabilité de l'ÉVÉNEMENT CONTRAIRE (que ça ne se produise PAS) vaut toujours 1 moins la probabilité de l'événement : P(non A) = 1 − P(A).",
+            "Pour deux événements INDÉPENDANTS (l'un n'influence pas l'autre, comme 2 tirages avec remise), la probabilité qu'ils se produisent tous les deux est le PRODUIT de leurs probabilités.",
+            "DÉNOMBRER, c'est compter le nombre de façons de choisir des éléments dans un ensemble — utile pour calculer des probabilités sur de grands ensembles.",
+        ],
+        "exemple": "Un dé à 6 faces : P(obtenir un nombre pair) = 3/6 = 0.5 (3 cas favorables : 2, 4, 6 ; sur 6 cas possibles)",
+        "qcm": [
+            {"question": "Une probabilité est toujours un nombre compris entre...", "choix": ["-1 et 1", "0 et 1", "0 et 100", "1 et 10"], "bonne_reponse": 1},
+            {"question": "Dans un univers équiprobable, comment calcule-t-on une probabilité ?", "choix": ["cas favorables × cas possibles", "cas favorables / cas possibles", "cas possibles / cas favorables", "cas favorables + cas possibles"], "bonne_reponse": 1},
+            {"question": "La probabilité de l'événement contraire de A vaut...", "choix": ["P(A)", "1 − P(A)", "1 + P(A)", "P(A) / 2"], "bonne_reponse": 1},
+            {"question": "Pour 2 événements indépendants A et B, P(A et B) = ?", "choix": ["P(A) + P(B)", "P(A) × P(B)", "P(A) − P(B)", "P(A) / P(B)"], "bonne_reponse": 1},
+            {"question": "Dénombrer signifie...", "choix": ["Calculer une moyenne", "Compter le nombre de façons de choisir des éléments", "Trouver la probabilité maximale", "Trier des nombres"], "bonne_reponse": 1},
+        ],
+    },
 }

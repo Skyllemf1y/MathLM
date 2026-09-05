@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block contenu %}
+    <section class="section-hero">
+        <h1>🧮 Apprends les maths en t'amusant</h1>
+        <p class="sous-titre">
+            {{ nom_application }} te fait progresser chapitre par chapitre : un système de vies façon jeu vidéo,
+            une série à ne pas casser chaque jour, des rangs à débloquer, et un mode Challenge qui mélange tout.
+        </p>
+        <div class="hero-actions">
+            <a href="{{ url_for('inscription') }}" class="bouton-continuer">Créer un compte gratuitement</a>
+            <a href="{{ url_for('connexion') }}" class="bouton-retour-hero">J'ai déjà un compte</a>
+        </div>
+        <p class="sous-titre" style="margin-top:14px;">
+            Ou <a href="{{ url_for('jouer_en_invite') }}">essaie tout de suite, sans créer de compte</a>.
+        </p>
+    </section>
+
+    <div class="grille-pitch">
+        <div class="carte-pitch"><span class="pitch-icone">❤️</span><p>Un système de vies, comme un vrai jeu</p></div>
+        <div class="carte-pitch"><span class="pitch-icone">🔥</span><p>Une série à ne pas casser chaque jour</p></div>
+        <div class="carte-pitch"><span class="pitch-icone">🥇</span><p>Des rangs à débloquer, du Bronze au Diamant</p></div>
+        <div class="carte-pitch"><span class="pitch-icone">🎲</span><p>Un mode Challenge qui mélange tous les chapitres</p></div>
+    </div>
+{% endblock %}
